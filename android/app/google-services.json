@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "655591607190",
+    "firebase_url": "https://alpha-omega-693b9.firebaseio.com",
+    "project_id": "alpha-omega-693b9",
+    "storage_bucket": "alpha-omega-693b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655591607190:android:9d3ce539b0499aee556bb7",
+        "android_client_info": {
+          "package_name": "com.alpha_omega_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "655591607190-0096ottdvehoj8ueqihb87skfrajjqhf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCx3rk76fuM_T6AnqAzqhLfrE9SRGye7NA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "655591607190-0096ottdvehoj8ueqihb87skfrajjqhf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
