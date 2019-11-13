@@ -22,7 +22,7 @@ import {AirStatus, InfoBoard, FireStatus,EscapeMap} from './src/main'
 import {Provider,connect} from 'react-redux'
 import {createStore} from 'redux';
 import AppReducer from './src/reducers';
-import { GoFireAlert } from './src/actions';
+import { GoFireAlert, RegisterToken } from './src/actions';
 import { Button } from './src/components/button';
 const deviceWidth = Math.round(Dimensions.get('window').width);
 const deviceHeight = Math.round(Dimensions.get('window').height);
@@ -54,6 +54,7 @@ class Display extends Component{
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: function(token) {
         console.log("TOKEN:", token);
+        store.dispatch(RegisterToken(token.token,token.os))
       },
       // (required) Called when a remote or local notification is opened or received
       onNotification: function(notification) {
@@ -66,6 +67,7 @@ class Display extends Component{
       popInitialNotification:false,
       }
     )
+    
     this.state={
       display:{
         show:false
@@ -92,7 +94,9 @@ class Display extends Component{
           <View>
           <Header/>
           <View style={{flexDirection:'row'}}>
-            {this.props.showSideBar === true?<Sidebar onPressSetting={()=>this.onPressSetting()} onPressFireAlert={()=>{this.onPressFireAlert()}}/>:null}
+            {this.props.showSideBar === true?
+              <Sidebar onPressSetting={()=>this.onPressSetting()} onPressFireAlert={()=>{this.onPressFireAlert()}}/>
+              :null}
             <View style={{flexDirection:'column'}}>
               <ScrollView style={{height:'100%',width:deviceWidth,backgroundColor:'lightgray'}}>
                 <InfoBoard/>

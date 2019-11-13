@@ -9,6 +9,9 @@ const alertInitState = {
     show:false,
     message:null,
 }
+const dataInitState = {
+    token:null
+}
 const alertwindow = (state=alertInitState,action)=>{
     switch(action.type){
         case SHOWALERTWINDOW:
@@ -49,6 +52,15 @@ const display = (state = displayInitState,action)=>{
             })  
         default:
             return state;
+    }
+}
+const data = (state=dataInitState,action)=>{
+    switch(action.type){
+        case REGISTERTOKEN:
+            return Object.assign({},state,{
+                token:action.token,
+                os:action.os
+            })
     }
 }
 const AppReducer=combineReducers({

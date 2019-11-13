@@ -4,6 +4,8 @@ export const SHOWALERTWINDOW = "SHOWALERTWINDOW";
 export const HIDEALERTWINDOW = "HIDEALERTWINDOW";
 export const GOMAIN = "GOMAIN";
 export const GOFIREALERT = "GOFIREALERT";
+export const REGISTERTOKEN = "REGISTERTOKEN";
+
 export const showSideBar=()=>{
     console.log('show sidebar')
     return{
@@ -36,5 +38,13 @@ export const GoFireAlert=()=>{
     console.log("firealert action")
     return{
         type:GOFIREALERT
+    }
+}
+export const RegisterToken=(token,os)=>{
+    console.log("registertoken:",token);
+    return{
+        type:REGISTERTOKEN,
+        token:token,
+        os:os
     }
 }
