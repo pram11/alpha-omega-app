@@ -18,7 +18,6 @@ import { TextInputComp } from '../components/inputarea';
 import { Button } from '../components/button';
 import {GoBackHeader} from '../header';
 import { NetSetting } from '../actions';
-import { getConsoleOutput } from '@jest/console';
 const deviceWidth = Math.round(Dimensions.get('window').width);
 const deviceHeight = Math.round(Dimensions.get('window').height);
 
