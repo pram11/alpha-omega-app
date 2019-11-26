@@ -1,4 +1,4 @@
-import { SHOWSIDEBAR, HIDESIDEBAR,GOMAIN,GOFIREALERT,SHOWALERTWINDOW,HIDEALERTWINDOW} from "../actions"
+import { SHOWSIDEBAR, HIDESIDEBAR,GOMAIN,GOFIREALERT,SHOWALERTWINDOW,HIDEALERTWINDOW, GOSETTING,REGISTERTOKEN, NETSETTING} from "../actions"
 import {combineReducers} from 'redux'
 
 const displayInitState = {
@@ -9,8 +9,13 @@ const alertInitState = {
     show:false,
     message:null,
 }
-const dataInitState = {
-    token:null
+const pushInitState = {
+    token:null,
+    os:null
+}
+const NetConfigInitState = {
+    url:null,
+    port:80
 }
 const alertwindow = (state=alertInitState,action)=>{
     switch(action.type){
@@ -50,21 +55,40 @@ const display = (state = displayInitState,action)=>{
             return Object.assign({},state,{
                 display:'fire'
             })  
+        case GOSETTING:
+            return Object.assign({},state,{
+                display:'setting'
+            })
         default:
             return state;
     }
 }
-const data = (state=dataInitState,action)=>{
+const pushnotification = (state=pushInitState,action)=>{
     switch(action.type){
         case REGISTERTOKEN:
             return Object.assign({},state,{
                 token:action.token,
                 os:action.os
             })
+        default:
+            return state;
+    }
+}
+const NetConfig = (state=NetConfigInitState,action)=>{
+    switch(action.type){
+        case NETSETTING:
+            return Object.assign({},state,{
+                url:action.url,
+                port:action.port
+            })
+        default:
+            return state
     }
 }
 const AppReducer=combineReducers({
     display:display,
-    alertWindow:alertwindow
+    alertWindow:alertwindow,
+    pushnotification:pushnotification,
+    netConfig:NetConfig
 })
 export default AppReducer

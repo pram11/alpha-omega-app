@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux'
 import {Button} from '../components/button'
 
-import { showSideBar,hideSideBar } from '../actions';
+import { showSideBar,hideSideBar,GoMain } from '../actions';
 const deviceWidth = Math.round(Dimensions.get('window').width);
 const deviceHeight = Math.round(Dimensions.get('window').height);
 
@@ -51,6 +51,31 @@ let HeaderMSTP=(state)=>{
     }
 }
 Header = connect(HeaderMSTP,HeaderMDTP)(Header)
+
+class GoBackHeader extends Component{
+    _onPressMenu(){
+        this.props.goBack()
+
+    }
+    render(){
+        return(
+            <View style={[styles.Header,{flexDirection:"row"}]}>
+                <TouchableOpacity style={{flex:1,backgroundColor:'white',borderRadius:4,alignItems:'center',justifyContent:'center'}} onPress={()=>this._onPressMenu()} >
+                    <Icon name="bars" size={48} color="black" />
+                </TouchableOpacity>
+                <View style={{flex:7}}>
+
+                </View>
+            </View>
+        )
+    }
+}
+let GoBackHeaderMDTP=(dispatch)=>{
+    return{
+        goBack:()=>dispatch(GoMain())
+    }
+}
+GoBackHeader = connect(undefined,GoBackHeaderMDTP)(GoBackHeader)
 
 class FireHeader extends Component{
     render(){
@@ -90,10 +115,13 @@ class Sidebar extends Component{
     _onPressFireAlert(){
         this.props.onPressFireAlert()
     }
+    _onPressSetting(){
+        this.props.onPressSetting()
+    }
     render(){
         return(
             <Animated.View style={[{backgroundColor:"white",elevation:3},this._AnimaionShow()]}>
-                <Button Text="설정" buttonStyle={{elevation:4}} onPress={()=>{}} fontColor="green"/>
+                <Button Text="설정" buttonStyle={{elevation:4}} onPress={()=>{}} onPress={()=>this._onPressSetting()} fontColor="green"/>
                 <Button Text="신고" buttonStyle={{backgroundColor:"red",elevation:4}} onPress={()=>this._onPressFireAlert()} fontColor="white"/>
             </Animated.View>
         )
@@ -115,4 +143,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export {Header,Sidebar,FireHeader}
+export {Header,Sidebar,FireHeader,GoBackHeader}

@@ -18,15 +18,15 @@ import {
   Dimensions
 } from 'react-native';
 import {Header, Sidebar, FireHeader} from './src/header'
-import {AirStatus, InfoBoard, FireStatus,EscapeMap} from './src/main'
+import {AirStatus, InfoBoard, FireStatus,EscapeMap,AppSetting} from './src/main'
 import {Provider,connect} from 'react-redux'
 import {createStore} from 'redux';
 import AppReducer from './src/reducers';
-import { GoFireAlert, RegisterToken } from './src/actions';
+import { GoFireAlert, RegisterToken, GoSetting } from './src/actions';
 import { Button } from './src/components/button';
 const deviceWidth = Math.round(Dimensions.get('window').width);
 const deviceHeight = Math.round(Dimensions.get('window').height);
-
+const axios = require('axios')
 const store = createStore(AppReducer)
 
 var PushNotification = require("react-native-push-notification");
@@ -77,17 +77,18 @@ class Display extends Component{
   onPressFireAlert(){
     //화재 신고 통신 위치
     console.log("firealert!")
+    axios.post(this.props.url+":"+this.props.port,{"test":"test"})
     this.props.GoFireAlert()
 
   }
   onPressSetting(){
     //설정 페이지로 이동
+    this.props.GoSetting()
   }
   cancelFireReport(){
     //TODO:논의 필요.
   }
   render(){
-    console.log(this.props)
     switch(this.props.display){
       case 'main':
         return(
@@ -119,6 +120,13 @@ class Display extends Component{
 
           </View>
         )
+      case 'setting':
+        return(
+        <View>
+          <Text>설정페이지입니다.</Text>
+          <AppSetting></AppSetting>
+        </View>
+        )
       default:
         return null
     }
@@ -129,12 +137,15 @@ let DisplayMSTP=(state)=>{
   return{
 
     display:state.display.display,
-    showSideBar:state.display.showSideBar
+    showSideBar:state.display.showSideBar,
+    
+  
   }
 }
 let DisplayMDTP=(dispatch)=>{
   return{
-    GoFireAlert:()=>dispatch(GoFireAlert())
+    GoFireAlert:()=>dispatch(GoFireAlert()),
+    GoSetting:()=>dispatch(GoSetting())
   }
 }
 Display = connect(DisplayMSTP,DisplayMDTP)(Display)
