@@ -13,10 +13,10 @@ const pushInitState = {
     token:null,
     os:null
 }
-const NetConfigInitState = {
+/*const NetConfigInitState = {
     url:null,
     port:80
-}
+}*/
 const alertwindow = (state=alertInitState,action)=>{
     switch(action.type){
         case SHOWALERTWINDOW:
@@ -49,15 +49,18 @@ const display = (state = displayInitState,action)=>{
             })
         case GOMAIN:
             return Object.assign({},state,{
-                display:'main'
+                display:'main',
+                showSideBar:false
             })
         case GOFIREALERT:
             return Object.assign({},state,{
-                display:'fire'
+                display:'fire',
+                showSideBar:false
             })  
         case GOSETTING:
             return Object.assign({},state,{
-                display:'setting'
+                display:'setting',
+                showSideBar:false
             })
         default:
             return state;
@@ -74,6 +77,8 @@ const pushnotification = (state=pushInitState,action)=>{
             return state;
     }
 }
+
+/*not in use
 const NetConfig = (state=NetConfigInitState,action)=>{
     switch(action.type){
         case NETSETTING:
@@ -84,11 +89,11 @@ const NetConfig = (state=NetConfigInitState,action)=>{
         default:
             return state
     }
-}
+}*/
 const AppReducer=combineReducers({
     display:display,
     alertWindow:alertwindow,
     pushnotification:pushnotification,
-    netConfig:NetConfig
+//   netConfig:NetConfig
 })
 export default AppReducer

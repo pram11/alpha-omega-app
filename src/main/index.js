@@ -14,7 +14,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
 import { TextInputComp } from '../components/inputarea';
-
+import {HOME_URL} from '../../App'
 import { Button } from '../components/button';
 import {GoBackHeader} from '../header';
 import { NetSetting } from '../actions';
@@ -151,7 +151,7 @@ class FireStatusComponent extends Component{
 class EscapeMap extends Component{
     render(){
         return(
-            <View style={{margin:8,marginBottom:0,padding:8,backgroundColor:'white',borderRadius:8,elevation:3}}>
+            <View style={{margin:8,marginBottom:8,padding:8,backgroundColor:'white',borderRadius:8,elevation:3,height:600}}>
                 <Text style={{width:"100%",textAlign:'center',fontSize:30}}>비상 대피로</Text>
                 <Image style={{width:"100%",height:500}} source={{uri:"https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FcPAIDF%2FbtqzZKh0o61%2FTRieFAcT4M5hmSJwS1kU00%2Fimg.jpg"}} />
             </View>
@@ -162,7 +162,7 @@ class EscapeMap extends Component{
 
 let AppSettingMSTP = (state)=>{
     return{
-        device_id:state.pushnotification.token
+        device_id:state.pushnotification.token,
     }
 }
 let AppSettingMDTP=(dispatch)=>{
@@ -171,34 +171,27 @@ let AppSettingMDTP=(dispatch)=>{
     }
 }
 class AppSetting extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-            uri:null,
-            port:null
-        }
-    }
-    getURI(textinput){
-        this.setState({uri:textinput});
-    }
-    getPort(port){
-        console.log("port:",port)
-    }
-    saveURI(){
-        this.props.saveURI(this.state.uri,this.state.port);
+    sendTokenData(){
+        axios({
+            method:"post",
+            url:HOME_URL+'/token',
+            data:{
+                token:this.props.device_id
+            }
+        }).then(function(response){
+            console.log(response)
+        })
     }
     render(){
         return(
-            <View>
+            <View >
                 <GoBackHeader></GoBackHeader>
-                <Text>push 정보:</Text>
-                <Text>{this.props.device_id}</Text>
-                <Button Text="Token 데이터 서버로 전송"></Button>
-                <View style={{margin:8,padding:8,borderRadius:8,elevation:2,backgroundColor:'white'}}>
-                    <TextInputComp Title="URI" onChangeText={(data)=>this.getURI(data)}></TextInputComp>
-                    <TextInputComp Title="PORT" onChangeText={(data)=>this.getPort(data)}></TextInputComp>
-                    <Button Text="저장"></Button>
+                <View style={{margin:4,padding:8,borderRadius:8,elevation:2,backgroundColor:'white'}}>
+                    <Text>push 정보:</Text>
+                    <Text>{this.props.device_id}</Text>
+                    <Button Text="Token 데이터 서버로 전송" onPress={()=>this.sendTokenData()}></Button>
                 </View>
+                
             </View>
         )
     }

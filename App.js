@@ -22,7 +22,7 @@ import {AirStatus, InfoBoard, FireStatus,EscapeMap,AppSetting} from './src/main'
 import {Provider,connect} from 'react-redux'
 import {createStore} from 'redux';
 import AppReducer from './src/reducers';
-import { GoFireAlert, RegisterToken, GoSetting } from './src/actions';
+import { GoFireAlert, RegisterToken, GoSetting, GoMain} from './src/actions';
 import { Button } from './src/components/button';
 const deviceWidth = Math.round(Dimensions.get('window').width);
 const deviceHeight = Math.round(Dimensions.get('window').height);
@@ -30,7 +30,7 @@ const axios = require('axios')
 const store = createStore(AppReducer)
 
 var PushNotification = require("react-native-push-notification");
-
+export const HOME_URL = 'http://clarin.moe:8995'
 export default class Base extends Component{
     componentDidMount(){
       //상태 확인 통신 모듈 삽입 위치.
@@ -76,9 +76,20 @@ class Display extends Component{
   }
   onPressFireAlert(){
     //화재 신고 통신 위치
+    _props = this.props
     console.log("firealert!")
-    axios.post(this.props.url+":"+this.props.port,{"test":"test"})
-    this.props.GoFireAlert()
+    axios({
+      url:HOME_URL+'/status',
+      method:"post",
+      data:{status:"fire"}
+    })
+    .then(function(request){
+      console.log(request);
+      _props.GoFireAlert();
+
+    }).catch(function(error){
+      console.log(error)
+    })
 
   }
   onPressSetting(){
@@ -87,6 +98,29 @@ class Display extends Component{
   }
   cancelFireReport(){
     //TODO:논의 필요.
+    let _props = this.props
+    axios({
+      url:HOME_URL+'/initialize',
+      method:'post'
+    }).then(function(response){
+      console.log(response)
+      _props.GoMain()    
+    })
+  }
+  componentDidMount(){
+    let _props = this.props
+    console.log('component did mount')
+    axios({url:HOME_URL+'/status',
+      method:'get' 
+    })
+    .then(function(response){
+      console.log(response.data.status)
+      if(response.data.status==="fire"){
+        _props.GoFireAlert();
+      }
+    }).catch(function(error){
+      console.log(error);
+    })
   }
   render(){
     switch(this.props.display){
@@ -115,8 +149,13 @@ class Display extends Component{
             <ScrollView style={{flexDirection:'column',height:'100%',width:deviceWidth,backgroundColor:'lightgray'}}>
               <FireStatus/>
               <EscapeMap/>
-              <Button Text="신고 취소" buttonStyle={{backgroundColor:'#FF8888'}} onPress={()=>{this.cancelFireReport()}}/>
-            </ScrollView>
+              <Button Text="신고 취소" buttonStyle={{backgroundColor:"lightgreen" }} onPress={()=>this.cancelFireReport()}></Button>
+              <View style={{'margin':40}}>
+              </View>
+
+            </ScrollView>              
+
+
 
           </View>
         )
@@ -145,7 +184,8 @@ let DisplayMSTP=(state)=>{
 let DisplayMDTP=(dispatch)=>{
   return{
     GoFireAlert:()=>dispatch(GoFireAlert()),
-    GoSetting:()=>dispatch(GoSetting())
+    GoSetting:()=>dispatch(GoSetting()),
+    GoMain:()=>dispatch(GoMain())
   }
 }
 Display = connect(DisplayMSTP,DisplayMDTP)(Display)
